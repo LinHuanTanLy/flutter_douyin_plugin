@@ -15,6 +15,10 @@ class Dy {
     return DyPlatform.instance.loginInWithDouyin();
   }
 
+  Future<String?> reNewRefreshToken(String refreshToken) {
+    return DyPlatform.instance.reNewRefreshToken(refreshToken);
+  }
+
   void addDyCallbackListener(DyCallBackListener listener) {
     DyPlatform.instance.addDyCallbackListener(listener);
   }

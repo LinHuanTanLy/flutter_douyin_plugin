@@ -38,6 +38,14 @@ abstract class DyPlatform extends PlatformInterface {
     throw UnimplementedError('initKey() has not been implemented.');
   }
 
+  ///刷新refreshToken
+  Future<String?> reNewRefreshToken(String refreshToken) {
+    throw UnimplementedError('renewRefreshToken() has not been implemented.');
+  }
+
   ///增加回调
-  void addDyCallbackListener(DyCallBackListener callBackListener) {}
+  void addDyCallbackListener(DyCallBackListener callBackListener) {
+    throw UnimplementedError(
+        'addDyCallbackListener() has not been implemented.');
+  }
 }

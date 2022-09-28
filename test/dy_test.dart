@@ -5,17 +5,11 @@ import 'package:dy/dy_platform_interface.dart';
 import 'package:dy/dy_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockDyPlatform 
-    with MockPlatformInterfaceMixin
-    implements DyPlatform {
-
+class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 
-  @override
-  Future<String?> initSdk(String clientKey) {
-    throw UnimplementedError();
-  }
+
 
   @override
   Future<String?> loginInWithDouyin() {
@@ -28,7 +22,11 @@ class MockDyPlatform
   }
 
   @override
-  void addDyCallbackListener(DyCallBackListener callBackListener) {
+  void addDyCallbackListener(DyCallBackListener callBackListener) {}
+
+  @override
+  Future<String?> reNewRefreshToken(String refreshToken) {
+    throw UnimplementedError();
   }
 }
 
@@ -43,7 +41,7 @@ void main() {
     Dy dyPlugin = Dy();
     MockDyPlatform fakePlatform = MockDyPlatform();
     DyPlatform.instance = fakePlatform;
-  
+
     expect(await dyPlugin.getPlatformVersion(), '42');
   });
 }

@@ -21,15 +21,19 @@ class DioUtils {
     return _dio!;
   }
 
-  Future<Response>? request({
-    REQ reqType = REQ.POST,
-    required String url,
-    required Map<String, dynamic> params,
-    Function? onError,
-  }) {
+  Future<Response>? request(
+      {REQ reqType = REQ.POST,
+      required String url,
+      required Map<String, dynamic> params,
+      Function? onError,
+      String? contentType}) {
     if (reqType == REQ.POST) {
       return dio
-          .post(url, queryParameters: params)
+          .post(url,
+              queryParameters: params,
+              options: (contentType?.isNotEmpty ?? false)
+                  ? Options(contentType: contentType)
+                  : Options())
           .catchError(onError ?? () {});
     } else if (reqType == REQ.GET) {
       return dio.get(url, queryParameters: params).catchError(onError ?? () {});

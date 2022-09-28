@@ -14,20 +14,42 @@ class TokenUtils {
 
   Future<String> getAccessToken(String authCode) async {
     String resultStr = "";
-    Response? resp = await DioUtils()
-        .request(url: "https://open.douyin.com/oauth/access_token/", params: {
-      "client_secret": DyConf.clientSecret,
-      "code": authCode,
-      "grant_type": "authorization_code",
-      "client_key": DyConf.clientKey,
-    },onError: (error){
+    Response? resp = await DioUtils().request(
+        url: "https://open.douyin.com/oauth/access_token/",
+        params: {
+          "client_secret": DyConf.clientSecret,
+          "code": authCode,
+          "grant_type": "authorization_code",
+          "client_key": DyConf.clientKey,
+        },
+        onError: (error) {
           debugPrint("ly=> request AccessToken err is $error");
-    });
+        });
     if (resp?.statusCode == 200) {
       dynamic data = resp?.data;
       resultStr = json.encode(data);
     }
     debugPrint("ly=> getAccessToken result is $resp");
     return Future.value(resultStr);
+  }
+
+  Future<String> reNewAccessToken(String refreshToken) async {
+    String newRefreshToken = "";
+    Response? resp = await DioUtils().request(
+        url: "https://open.douyin.com/oauth/renew_refresh_token/",
+        params: {
+          "refresh_token": refreshToken,
+          "client_key": DyConf.clientKey,
+        },
+        contentType: "multipart/form-data",
+        onError: (error) {
+          debugPrint("ly=> request AccessToken err is $error");
+        });
+    if (resp?.statusCode == 200) {
+      dynamic data = resp?.data;
+      newRefreshToken = json.encode(data);
+    }
+    debugPrint("ly=> getAccessToken result is $resp");
+    return Future.value(newRefreshToken);
   }
 }

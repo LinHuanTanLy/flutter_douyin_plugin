@@ -60,4 +60,9 @@ class MethodChannelDy extends DyPlatform {
         .invokeMethod<String>('initSdk', {"clientKey": clientKey});
     return result;
   }
+
+  @override
+  Future<String?> reNewRefreshToken(String refreshToken) {
+    return TokenUtils().reNewAccessToken(refreshToken);
+  }
 }
