@@ -11,10 +11,6 @@ class Dy {
     return DyPlatform.instance.getPlatformVersion();
   }
 
-  Future<String?> initSdk(String clientKey) {
-    return DyPlatform.instance.initSdk(clientKey);
-  }
-
   Future<String?> loginInWithDouyin() {
     return DyPlatform.instance.loginInWithDouyin();
   }

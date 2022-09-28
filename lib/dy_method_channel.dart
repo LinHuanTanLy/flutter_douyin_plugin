@@ -46,13 +46,6 @@ class MethodChannelDy extends DyPlatform {
   }
 
   @override
-  Future<String?> initSdk(String clientKey) async {
-    final result = await methodChannel
-        .invokeMethod<String>('initSdk', {"clientKey": clientKey});
-    return result;
-  }
-
-  @override
   Future<String?> loginInWithDouyin() async {
     final result =
         await methodChannel.invokeMethod<String>('loginInWithDouyin');
@@ -60,9 +53,11 @@ class MethodChannelDy extends DyPlatform {
   }
 
   @override
-  Future<String?> initKey(String clientKey, String clientSecret) {
+  Future<String?> initKey(String clientKey, String clientSecret) async {
     DyConf.clientKey = clientKey;
     DyConf.clientSecret = clientSecret;
-    return Future.value("true");
+    final result = await methodChannel
+        .invokeMethod<String>('initSdk', {"clientKey": clientKey});
+    return result;
   }
 }

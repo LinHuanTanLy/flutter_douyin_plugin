@@ -28,17 +28,16 @@ abstract class DyPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> initSdk(String clientKey) {
-    throw UnimplementedError('initSdk() has not been implemented.');
-  }
-
+  ///登录
   Future<String?> loginInWithDouyin() {
     throw UnimplementedError('loginInWithDouyin() has not been implemented.');
   }
 
+  ///初始化key
   Future<String?> initKey(String clientKey, String clientSecret) {
     throw UnimplementedError('initKey() has not been implemented.');
   }
 
+  ///增加回调
   void addDyCallbackListener(DyCallBackListener callBackListener) {}
 }
