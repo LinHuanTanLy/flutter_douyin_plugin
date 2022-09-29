@@ -30,4 +30,8 @@ class Dy {
   Future<String?> reNewAccessToken(String refreshToken) {
     return DyPlatform.instance.reNewAccessToken(refreshToken);
   }
+
+  Future<String?> shareToEditPage(List<String> imgPathList, List<String> videoPathList) {
+    return DyPlatform.instance.shareToEditPage(imgPathList, videoPathList);
+  }
 }

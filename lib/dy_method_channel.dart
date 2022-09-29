@@ -70,8 +70,17 @@ class MethodChannelDy extends DyPlatform {
   Future<String?> getClientToken() {
     return TokenUtils().getClientToken();
   }
+
   @override
   Future<String?> reNewAccessToken(String refreshToken) {
     return TokenUtils().reNewAccessToken(refreshToken);
+  }
+
+  @override
+  Future<String?> shareToEditPage(
+      List<String> imgPathList, List<String> videoPathList) async {
+    final result = await methodChannel.invokeMethod<String>('shareToEditPage',
+        {"imgPathList": imgPathList, "videoPathList": videoPathList});
+    return result;
   }
 }

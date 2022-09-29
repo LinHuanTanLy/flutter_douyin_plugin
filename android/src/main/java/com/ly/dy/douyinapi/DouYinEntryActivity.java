@@ -13,6 +13,7 @@ import com.bytedance.sdk.open.aweme.authorize.model.Authorization;
 import com.bytedance.sdk.open.aweme.common.handler.IApiEventHandler;
 import com.bytedance.sdk.open.aweme.common.model.BaseReq;
 import com.bytedance.sdk.open.aweme.common.model.BaseResp;
+import com.bytedance.sdk.open.aweme.share.Share;
 import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
 import com.ly.dy.utils.DyUtils;
@@ -46,6 +47,19 @@ public class DouYinEntryActivity extends Activity implements IApiEventHandler {
                 Toast.makeText(this, "授权失败",
                         Toast.LENGTH_LONG).show();
             }
+
+        } else if (resp.getType() == CommonConstants.ModeType.SHARE_CONTENT_TO_TT_RESP) {
+            //发布回调
+            Share.Response response = (Share.Response) resp;
+            String shareResult = "";
+            if (response.isSuccess()) {
+                shareResult = "分享成功";
+            } else {
+                shareResult = response.errorMsg;
+                Toast.makeText(this, response.errorCode + response.subErrorCode + response.errorMsg,
+                        Toast.LENGTH_LONG).show();
+            }
+            DyUtils.getInstance().getSharePageResult(shareResult);
 
         }
         this.finish();

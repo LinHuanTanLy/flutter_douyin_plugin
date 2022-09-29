@@ -58,4 +58,9 @@ abstract class DyPlatform extends PlatformInterface {
   Future<String?> reNewAccessToken(String refreshToken) {
     throw UnimplementedError('reNewAccessToken() has not been implemented.');
   }
+
+  ///分享去编辑页面
+  Future<String?> shareToEditPage(List<String> imgPathList, List<String> videoPathList) {
+    throw UnimplementedError('shareToEditPage() has not been implemented.');
+  }
 }
