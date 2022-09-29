@@ -26,4 +26,8 @@ class Dy {
   void addDyCallbackListener(DyCallBackListener listener) {
     DyPlatform.instance.addDyCallbackListener(listener);
   }
+
+  Future<String?> reNewAccessToken(String refreshToken) {
+    return DyPlatform.instance.reNewAccessToken(refreshToken);
+  }
 }

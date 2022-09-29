@@ -63,11 +63,15 @@ class MethodChannelDy extends DyPlatform {
 
   @override
   Future<String?> reNewRefreshToken(String refreshToken) {
-    return TokenUtils().reNewAccessToken(refreshToken);
+    return TokenUtils().reNewRefreshToken(refreshToken);
   }
 
   @override
   Future<String?> getClientToken() {
     return TokenUtils().getClientToken();
+  }
+  @override
+  Future<String?> reNewAccessToken(String refreshToken) {
+    return TokenUtils().reNewAccessToken(refreshToken);
   }
 }

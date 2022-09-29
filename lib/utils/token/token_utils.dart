@@ -33,7 +33,7 @@ class TokenUtils {
     return Future.value(resultStr);
   }
 
-  Future<String> reNewAccessToken(String refreshToken) async {
+  Future<String> reNewRefreshToken(String refreshToken) async {
     String newRefreshToken = "";
     Response? resp = await DioUtils().request(
         url: "https://open.douyin.com/oauth/renew_refresh_token/",
@@ -43,13 +43,13 @@ class TokenUtils {
         },
         contentType: "multipart/form-data",
         onError: (error) {
-          debugPrint("ly=> request reNewAccessToken err is $error");
+          debugPrint("ly=> request reNewRefreshToken err is $error");
         });
     if (resp?.statusCode == 200) {
       dynamic data = resp?.data;
       newRefreshToken = json.encode(data);
     }
-    debugPrint("ly=> reNewAccessToken result is $resp");
+    debugPrint("ly=> reNewRefreshToken result is $resp");
     return Future.value(newRefreshToken);
   }
 
@@ -72,5 +72,26 @@ class TokenUtils {
     }
     debugPrint("ly=> getClientToken result is $resp");
     return Future.value(clientToken);
+  }
+
+  Future<String> reNewAccessToken(String refreshToken) async {
+    String newRefreshToken = "";
+    Response? resp = await DioUtils().request(
+        url: "https://open.douyin.com/oauth/refresh_token/",
+        params: {
+          "refresh_token": refreshToken,
+          "grant_type": "refresh_token",
+          "client_key": DyConf.clientKey,
+        },
+        contentType: "application/x-www-form-urlencoded",
+        onError: (error) {
+          debugPrint("ly=> request reNewAccessToken err is $error");
+        });
+    if (resp?.statusCode == 200) {
+      dynamic data = resp?.data;
+      newRefreshToken = json.encode(data);
+    }
+    debugPrint("ly=> reNewAccessToken result is $resp");
+    return Future.value(newRefreshToken);
   }
 }

@@ -53,4 +53,9 @@ abstract class DyPlatform extends PlatformInterface {
     throw UnimplementedError(
         'addDyCallbackListener() has not been implemented.');
   }
+
+  ///刷新AccessToken
+  Future<String?> reNewAccessToken(String refreshToken) {
+    throw UnimplementedError('reNewAccessToken() has not been implemented.');
+  }
 }

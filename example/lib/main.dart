@@ -23,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   String? loginInResult = "";
   String? reNewRefreshTokenResult = "";
   String? clientTokenResult = "";
+  String? reNewAccessTokenResult = "";
 
   final BoxDecoration _decoration = BoxDecoration(
     boxShadow: [BoxShadow(color: Colors.black.withAlpha(180))],
@@ -98,6 +99,15 @@ class _MyAppState extends State<MyApp> {
                 }
                 clientTokenResult = await _dyPlugin.getClientToken();
               }, '$clientTokenResult'),
+              _buildItemWidget("reNewAccessToken", () async {
+                if (loginInResult?.isEmpty ?? true) {
+                  setState(() {
+                    reNewAccessTokenResult = "login first";
+                  });
+                }
+                reNewAccessTokenResult = await _dyPlugin.reNewAccessToken(
+                    jsonDecode(loginInResult ?? "")['data']['refresh_token']);
+              }, '$reNewAccessTokenResult'),
             ],
           )),
     );
