@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dy/dy.dart';
 
-const clientKey = 'awydmcyyh53uwo1v';
-const clientSecret = 'ac1a816c62a84475bd27356f9af52fe1';
+const clientKey = 'xxx';
+const clientSecret = 'xxx';
 
 void main() {
   runApp(const MyApp());
