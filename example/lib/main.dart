@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:dy/dy.dart';
 
@@ -19,6 +21,8 @@ class _MyAppState extends State<MyApp> {
   final _dyPlugin = Dy();
   String? initKeyResult = "";
   String? loginInResult = "";
+  String? reNewRefreshTokenResult = "";
+  String? clientTokenResult = "";
 
   final BoxDecoration _decoration = BoxDecoration(
     boxShadow: [BoxShadow(color: Colors.black.withAlpha(180))],
@@ -73,7 +77,27 @@ class _MyAppState extends State<MyApp> {
                   });
                 }
                 loginInResult = await _dyPlugin.loginInWithDouyin();
-              }, '$loginInResult')
+              }, '$loginInResult'),
+              _buildItemWidget("addDyCallbackListener", () async {
+                _dyPlugin.addDyCallbackListener((eventName, eventParams) {});
+              }, '主动收到插件发送过来的消息'),
+              _buildItemWidget("reNewRefreshToken", () async {
+                if (loginInResult?.isEmpty ?? true) {
+                  setState(() {
+                    reNewRefreshTokenResult = "login first";
+                  });
+                }
+                reNewRefreshTokenResult = await _dyPlugin.reNewRefreshToken(
+                    jsonDecode(loginInResult ?? "")['data']['refresh_token']);
+              }, '$reNewRefreshTokenResult'),
+              _buildItemWidget("clientTokenResult", () async {
+                if (loginInResult?.isEmpty ?? true) {
+                  setState(() {
+                    clientTokenResult = "login first";
+                  });
+                }
+                clientTokenResult = await _dyPlugin.getClientToken();
+              }, '$clientTokenResult'),
             ],
           )),
     );
