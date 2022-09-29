@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:dy/dy.dart';
+
+const clientKey = 'awydmcyyh53uwo1v';
+const clientSecret = 'ac1a816c62a84475bd27356f9af52fe1';
 
 void main() {
   runApp(const MyApp());
@@ -16,48 +16,66 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
   final _dyPlugin = Dy();
+  String? initKeyResult = "";
+  String? loginInResult = "";
+
+  final BoxDecoration _decoration = BoxDecoration(
+    boxShadow: [BoxShadow(color: Colors.black.withAlpha(180))],
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.white,
+  );
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _dyPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildItemWidget(
+      String method,
+      VoidCallback? onPressed,
+      String result,
+    ) =>
+        Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(8),
+            width: double.infinity,
+            decoration: _decoration,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(onPressed: onPressed, child: Text(method)),
+                Text(result)
+              ],
+            ));
+
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-      ),
+          backgroundColor: const Color(0xfff4f4f4),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: Column(
+            children: [
+              _buildItemWidget("initKey", () async {
+                initKeyResult =
+                    await _dyPlugin.initKey(clientKey, clientSecret);
+                debugPrint("the initKeyResult is $initKeyResult");
+                setState(() {});
+              }, "initKeyResult is $initKeyResult"),
+              _buildItemWidget("loginInWithDy", () async {
+                if (initKeyResult != "true") {
+                  setState(() {
+                    loginInResult = "initKey first";
+                  });
+                }
+                loginInResult = await _dyPlugin.loginInWithDouyin();
+              }, '$loginInResult')
+            ],
+          )),
     );
   }
 }
