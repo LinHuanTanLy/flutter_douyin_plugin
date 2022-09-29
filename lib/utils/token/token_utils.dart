@@ -43,13 +43,34 @@ class TokenUtils {
         },
         contentType: "multipart/form-data",
         onError: (error) {
-          debugPrint("ly=> request AccessToken err is $error");
+          debugPrint("ly=> request reNewAccessToken err is $error");
         });
     if (resp?.statusCode == 200) {
       dynamic data = resp?.data;
       newRefreshToken = json.encode(data);
     }
-    debugPrint("ly=> getAccessToken result is $resp");
+    debugPrint("ly=> reNewAccessToken result is $resp");
     return Future.value(newRefreshToken);
+  }
+
+  Future<String?> getClientToken() async {
+    String clientToken = "";
+    Response? resp = await DioUtils().request(
+        url: "https://open.douyin.com/oauth/client_token/",
+        params: {
+          "grant_type": "client_credential",
+          "client_key": DyConf.clientKey,
+          "client_secret": DyConf.clientSecret,
+        },
+        contentType: "multipart/form-data",
+        onError: (error) {
+          debugPrint("ly=> request getClientToken err is $error");
+        });
+    if (resp?.statusCode == 200) {
+      dynamic data = resp?.data;
+      clientToken = json.encode(data);
+    }
+    debugPrint("ly=> getClientToken result is $resp");
+    return Future.value(clientToken);
   }
 }

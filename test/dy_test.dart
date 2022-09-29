@@ -9,8 +9,6 @@ class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 
-
-
   @override
   Future<String?> loginInWithDouyin() {
     throw UnimplementedError();
@@ -26,6 +24,12 @@ class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
 
   @override
   Future<String?> reNewRefreshToken(String refreshToken) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getClientToken() {
+    // TODO: implement getClientToken
     throw UnimplementedError();
   }
 }

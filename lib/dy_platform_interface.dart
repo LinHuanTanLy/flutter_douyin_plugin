@@ -43,6 +43,11 @@ abstract class DyPlatform extends PlatformInterface {
     throw UnimplementedError('renewRefreshToken() has not been implemented.');
   }
 
+  /// 生成 client_token
+  Future<String?> getClientToken() {
+    throw UnimplementedError('getClientToken() has not been implemented.');
+  }
+
   ///增加回调
   void addDyCallbackListener(DyCallBackListener callBackListener) {
     throw UnimplementedError(

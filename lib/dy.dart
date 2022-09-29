@@ -19,6 +19,10 @@ class Dy {
     return DyPlatform.instance.reNewRefreshToken(refreshToken);
   }
 
+  Future<String?> getClientToken() {
+    return DyPlatform.instance.getClientToken();
+  }
+
   void addDyCallbackListener(DyCallBackListener listener) {
     DyPlatform.instance.addDyCallbackListener(listener);
   }
