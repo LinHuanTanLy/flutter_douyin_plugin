@@ -4,23 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.core.content.FileProvider;
-
-import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-
-import io.flutter.plugin.common.MethodChannel;
-
 public class FileUtils {
-    private static FileUtils fileUtils;
-    private static MethodChannel channel;
 
     public static FileUtils getInstance() {
         return FileUtils.Holder.INSTANCE;
@@ -46,7 +36,6 @@ public class FileUtils {
                     if (copyFile(new File(path), tempFile)) {
                         Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", tempFile);
                         context.grantUriPermission("com.ss.android.ugc.aweme", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        Toast.makeText(context, "" + uri.toString(), Toast.LENGTH_SHORT).show();
                         result.add(uri.toString());
                     }
                 }

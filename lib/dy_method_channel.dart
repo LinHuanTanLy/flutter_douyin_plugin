@@ -77,10 +77,13 @@ class MethodChannelDy extends DyPlatform {
   }
 
   @override
-  Future<String?> shareToEditPage(
-      List<String> imgPathList, List<String> videoPathList) async {
-    final result = await methodChannel.invokeMethod<String>('shareToEditPage',
-        {"imgPathList": imgPathList, "videoPathList": videoPathList});
+  Future<String?> shareToEditPage(List<String> imgPathList,
+      List<String> videoPathList, bool shareToPublish) async {
+    final result = await methodChannel.invokeMethod<String>(
+        shareToPublish ? 'shareToPublishPage' : 'shareToEditPage', {
+      "imgPathList": imgPathList,
+      "videoPathList": videoPathList,
+    });
     return result;
   }
 }

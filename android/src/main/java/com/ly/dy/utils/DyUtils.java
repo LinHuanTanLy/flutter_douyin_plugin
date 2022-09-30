@@ -1,15 +1,9 @@
 package com.ly.dy.utils;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 
 import com.bytedance.sdk.open.aweme.authorize.model.Authorization;
 import com.bytedance.sdk.open.aweme.base.ImageObject;
@@ -21,10 +15,6 @@ import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.DouYinOpenConfig;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,8 +77,6 @@ public class DyUtils {
         return getDouYinOpenApi(activity).authorize(request);
     }
 
-    public void openEditPage() {
-    }
 
     /**
      * 获取 access_token
@@ -146,7 +134,9 @@ public class DyUtils {
 
     public boolean shareToEditPage(
             List<String> imgPathList,
-            List<String> videoPathList
+            List<String> videoPathList,
+            boolean shareToPublish,
+            Activity activity
     ) {
         boolean onlyImg = false;
         boolean onlyVideo = false;
@@ -162,6 +152,12 @@ public class DyUtils {
         }
         if (imgPathList.isEmpty()) {
             onlyVideo = true;
+        }
+        if (shareToPublish && (isMix || onlyVideo)) {
+            if (videoPathList.size() > 1) {
+                Log.d("lht", "只能分享一个视频");
+                return false;
+            }
         }
         Share.Request request = new Share.Request();
         ArrayList<String> mUri = new ArrayList<>();
@@ -192,9 +188,11 @@ public class DyUtils {
             mixContent.mMediaObject = mixObject;
             request.mMediaContent = mixContent;
         }
+        if (shareToPublish && douYinOpenApi.isAppSupportShareToPublish()) {
+            request.shareToPublish = true;
+        }
         return douYinOpenApi.share(request);
     }
-
 
 
 }

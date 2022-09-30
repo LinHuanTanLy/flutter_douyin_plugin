@@ -1,8 +1,6 @@
 package com.ly.dy;
 
 import android.app.Activity;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -50,21 +48,28 @@ public class DyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware
                 result.success("" + loginResult);
                 break;
             case "shareToEditPage":
-                try {
-                    ArrayList<String> tempImgPathList = (Objects.requireNonNull(call.argument("imgPathList")));
-                    ArrayList<String> tempVideoPathList = (Objects.requireNonNull(call.argument("videoPathList")));
-
-                    List<String> imgPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempImgPathList));
-                    List<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
-                    boolean shareResult = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList);
-                    result.success("" + shareResult);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                shareToDyWithScene(call, result, false);
+                break;
+            case "shareToPublishPage":
+                shareToDyWithScene(call, result, true);
                 break;
             default:
                 result.notImplemented();
                 break;
+        }
+    }
+
+    private void shareToDyWithScene(@NonNull MethodCall call, @NonNull Result result, boolean shareToPublish) {
+        try {
+            ArrayList<String> tempImgPathList = (Objects.requireNonNull(call.argument("imgPathList")));
+            ArrayList<String> tempVideoPathList = (Objects.requireNonNull(call.argument("videoPathList")));
+
+            List<String> imgPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempImgPathList));
+            List<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
+            boolean shareResult = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList, shareToPublish,activity);
+            result.success("" + shareResult);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
