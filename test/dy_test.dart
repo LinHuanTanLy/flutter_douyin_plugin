@@ -32,6 +32,16 @@ class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
     // TODO: implement getClientToken
     throw UnimplementedError();
   }
+
+  @override
+  Future<String?> reNewAccessToken(String refreshToken) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> shareToEditPage(List<String> imgPathList, List<String> videoPathList, bool shareToPublish) {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
