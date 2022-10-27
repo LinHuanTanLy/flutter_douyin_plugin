@@ -22,7 +22,6 @@ class MethodChannelDy extends DyPlatform {
         case "getAccessToken":
           String authCode = call.arguments['authCode'];
           _callBackListener?.call("getAuthCode", authCode);
-
           String result = await TokenUtils().getAccessToken(authCode);
           _callBackListener?.call("getAccessToken", result);
           return Future.value(result);
