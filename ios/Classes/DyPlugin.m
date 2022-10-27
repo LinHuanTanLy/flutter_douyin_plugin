@@ -70,8 +70,19 @@ static DyPlugin *instance=nil;
     DouyinOpenSDKAuthRequest *request=[[DouyinOpenSDKAuthRequest alloc] init];
     request.permissions=[NSOrderedSet orderedSetWithObject:@"user_info"];
    bool ifSendAuth= [request sendAuthRequestViewController:[self viewController] completeBlock:^(DouyinOpenSDKAuthResponse * _Nonnull resp) {
-        NSLog(@"进入了回调了");
+       NSString *alertString = nil;
+       if(resp.errCode==0){
+           ///拿到code了
+           NSString *code=resp.code;
+           NSDictionary *resultMap=@{@"authCode":code};
+           [self->_channel invokeMethod:@"getAccessToken" arguments:resultMap];
+           alertString = [NSString stringWithFormat:@"Author Success Code : %@, permission : %@",resp.code, resp.grantedPermissions];
+           NSLog(@"result is %@",alertString);
+       }else{
+           ///失败了
+       }
     }];
+    
 }
 
 #pragma mark - Action
