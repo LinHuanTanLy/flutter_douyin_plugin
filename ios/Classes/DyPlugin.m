@@ -1,6 +1,7 @@
 #import "DyPlugin.h"
 #import <DouyinOpenSDK/DouyinOpenSDKApplicationDelegate.h>
 #import <DouyinOpenSDK/DouyinOpenSDKAuth.h>
+#import <DouyinOpenSDK/DouyinOpenSDKShare.h>
 
 @implementation DyPlugin
 
@@ -40,10 +41,15 @@ static DyPlugin *instance=nil;
   if ([@"getPlatformVersion" isEqualToString:call.method]) {
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   }else if([@"initSdk" isEqualToString:call.method]){
+      ///初始化sdk
       [self initSdk:options result:result];
   }else if([@"loginInWithDouyin" isEqualToString:call.method]){
-//      [self loginInWithDouyin:options result:result];
+      ///拿到微信授权
       [self loginWithDy];
+  }else if([@"shareToPublishPage" isEqualToString:call.method]){
+      ///跳转到分享页
+      [self shareToEditPage:options];
+      
   }
   
   
@@ -69,7 +75,7 @@ static DyPlugin *instance=nil;
 - (void) loginWithDy{
     DouyinOpenSDKAuthRequest *request=[[DouyinOpenSDKAuthRequest alloc] init];
     request.permissions=[NSOrderedSet orderedSetWithObject:@"user_info"];
-   bool ifSendAuth= [request sendAuthRequestViewController:[self viewController] completeBlock:^(DouyinOpenSDKAuthResponse * _Nonnull resp) {
+    [request sendAuthRequestViewController:[self viewController] completeBlock:^(DouyinOpenSDKAuthResponse * _Nonnull resp) {
        NSString *alertString = nil;
        if(resp.errCode==0){
            ///拿到code了
@@ -82,35 +88,35 @@ static DyPlugin *instance=nil;
            ///失败了
        }
     }];
-    
 }
 
 #pragma mark - Action
-// 抖音登录
-- (void) loginInWithDouyin:(NSDictionary *)options result:(FlutterResult) result{
-    DouyinOpenSDKAuthRequest *request = [[DouyinOpenSDKAuthRequest alloc] init];
-        request.permissions = [NSOrderedSet orderedSetWithObjects:@"user_info",  nil];
-        [request sendAuthRequestViewController:[self viewController]  completeBlock:^(DouyinOpenSDKAuthResponse * _Nonnull resp) {
+- (void) shareToEditPage:(NSDictionary *) options{
+    NSArray *tempImgList=options[@"imgPathList"];
+    NSArray *tempVideoList=options[@"videoPathList"];
+    NSLog(@"tempImgList is %@",tempImgList);
+    NSLog(@"tempVideoList is %@",tempVideoList);
+    DouyinOpenSDKShareRequest *req = [[DouyinOpenSDKShareRequest alloc] init];
+    req.mediaType=DouyinOpenSDKShareMediaTypeImage;
+    req.localIdentifiers=[[NSArray alloc] initWithObjects:tempImgList, nil];;
+    req.landedPageType=DouyinOpenSDKLandedPagePublish;
+    
+   [req sendShareRequestWithCompleteBlock:^(DouyinOpenSDKShareResponse * _Nonnull response) {
+       NSLog(@"进到分享的回调里面了");
+       NSString *result=nil;
+        result=response.description;
+        if(response.isSucceed){
+            
+        }else{
+            
+        }
+        NSLog(@"result is %@",result);
+    }];
 
-            NSLog(@"回调");
-            NSString *alertString = nil;
-            if (resp.errCode == 0) {
-                alertString = [NSString stringWithFormat:@"Author Success Code : %@, permission : %@",resp.code, resp.grantedPermissions];
-//                resp.errCode = 200;
-//                result(@"success");
-                NSLog(@"%@", alertString);
-                [self.channel invokeMethod: @"getAccessToken" arguments:alertString];
-
-
-            } else{
-                alertString = [NSString stringWithFormat:@"Author failed code : %@, msg : %@",@(resp.errCode), resp.errString];
-//                result(@"error");
-                NSLog(@"%@", alertString);
-
-            }
-            [self.channel invokeMethod: @"getAccessToken" arguments:alertString];
-        }];
+    NSLog(@"方法结束了");
 }
+
+
 
 
 @end
