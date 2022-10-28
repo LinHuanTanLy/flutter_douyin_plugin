@@ -2,18 +2,21 @@ package com.ly.dy.utils;
 
 import android.app.Activity;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bytedance.sdk.open.aweme.authorize.model.Authorization;
 import com.bytedance.sdk.open.aweme.base.ImageObject;
 import com.bytedance.sdk.open.aweme.base.MediaContent;
+import com.bytedance.sdk.open.aweme.base.MicroAppInfo;
 import com.bytedance.sdk.open.aweme.base.MixObject;
 import com.bytedance.sdk.open.aweme.base.VideoObject;
 import com.bytedance.sdk.open.aweme.share.Share;
 import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.DouYinOpenConfig;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
+import com.ly.dy.model.ResultModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,17 +135,30 @@ public class DyUtils {
         });
     }
 
-    public boolean shareToEditPage(
-            List<String> imgPathList,
-            List<String> videoPathList,
-            boolean shareToPublish,
-            Activity activity
+    /**
+     * @param imgPathList    图片路径列表
+     * @param videoPathList  视频路径列表
+     * @param shareToPublish 是否分享到发布页
+     * @param mHashTagList   话题tag
+     * @param mState         1：传入自定义字符串，可在 Response 中获取到该值，集成方可唯一标识这次请求,传入 OpenAPI 中申请 ShareID，分享结果会通过 Webhooks 进行回调。
+     * @return
+     */
+    public ResultModel shareToEditPage(
+            ArrayList<String> imgPathList,
+            ArrayList<String> videoPathList,
+            ArrayList<String> mHashTagList,
+            String mState,
+            String appId,
+            String appTitle,
+            String description,
+            String appUrl,
+            boolean shareToPublish
     ) {
         boolean onlyImg = false;
         boolean onlyVideo = false;
         boolean isMix = false;
         if (imgPathList.isEmpty() && videoPathList.isEmpty()) {
-            return false;
+            return new ResultModel(false, "图片和视频不可以同时为空");
         }
         if (!imgPathList.isEmpty() && !videoPathList.isEmpty()) {
             isMix = douYinOpenApi.isAppSupportMixShare();
@@ -155,8 +171,7 @@ public class DyUtils {
         }
         if (shareToPublish && (isMix || onlyVideo)) {
             if (videoPathList.size() > 1) {
-                Log.d("lht", "只能分享一个视频");
-                return false;
+                return new ResultModel(false, "只能分享一个视频");
             }
         }
         Share.Request request = new Share.Request();
@@ -188,10 +203,31 @@ public class DyUtils {
             mixContent.mMediaObject = mixObject;
             request.mMediaContent = mixContent;
         }
+
+        ///话题tag
+        if (mHashTagList != null && !mHashTagList.isEmpty()) {
+            request.mHashTagList = mHashTagList;
+        }
+
+        ///mState
+        if (!mState.isEmpty()) {
+            request.mState = mState;
+        }
+        ///携带的小程序
+        if (!appId.isEmpty() && !appTitle.isEmpty() && !description.isEmpty() && !appUrl.isEmpty()) {
+            MicroAppInfo microAppInfo = new MicroAppInfo();
+            microAppInfo.setAppId(appId);
+            microAppInfo.setAppTitle(appTitle);
+            microAppInfo.setDescription(description);
+            microAppInfo.setAppUrl(appUrl);
+            request.mMicroAppInfo = microAppInfo;
+        }
+
         if (shareToPublish && douYinOpenApi.isAppSupportShareToPublish()) {
             request.shareToPublish = true;
         }
-        return douYinOpenApi.share(request);
+        boolean ifShareSuc = douYinOpenApi.share(request);
+        return new ResultModel(ifShareSuc, "调用分享api");
     }
 
 

@@ -31,9 +31,25 @@ class Dy {
     return DyPlatform.instance.reNewAccessToken(refreshToken);
   }
 
-  Future<String?> shareToEditPage(List<String> imgPathList,
-      List<String> videoPathList, bool shareToPublishPage) {
-    return DyPlatform.instance
-        .shareToEditPage(imgPathList, videoPathList, shareToPublishPage);
+  Future<String?> shareToEditPage(
+      List<String> imgPathList,
+      List<String> videoPathList,
+      List<String> mHashTagList,
+      bool shareToPublish,
+      String mState,
+      String appId,
+      String appTitle,
+      String description,
+      String appUrl) {
+    return DyPlatform.instance.shareToEditPage(
+        imgPathList,
+        videoPathList,
+        mHashTagList,
+        shareToPublish,
+        mState,
+        appId,
+        appTitle,
+        description,
+        appUrl);
   }
 }

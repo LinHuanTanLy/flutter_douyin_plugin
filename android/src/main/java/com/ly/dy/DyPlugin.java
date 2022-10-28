@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
+import com.ly.dy.model.ResultModel;
 import com.ly.dy.utils.DyUtils;
 import com.ly.dy.utils.FileUtils;
 
@@ -63,11 +64,17 @@ public class DyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware
         try {
             ArrayList<String> tempImgPathList = (Objects.requireNonNull(call.argument("imgPathList")));
             ArrayList<String> tempVideoPathList = (Objects.requireNonNull(call.argument("videoPathList")));
-
-            List<String> imgPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempImgPathList));
-            List<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
-            boolean shareResult = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList, shareToPublish,activity);
-            result.success("" + shareResult);
+            ArrayList<String> mHashTagList = (Objects.requireNonNull(call.argument("mHashTagList")));
+            String mState = (Objects.requireNonNull(call.argument("mState")));
+            String appId = (Objects.requireNonNull(call.argument("appId")));
+            String appTitle = (Objects.requireNonNull(call.argument("appTitle")));
+            String description = (Objects.requireNonNull(call.argument("description")));
+            String appUrl = (Objects.requireNonNull(call.argument("appUrl")));
+            ArrayList<String> imgPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempImgPathList));
+            ArrayList<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
+            ResultModel resultModel = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList,
+                    mHashTagList, mState, appId, appTitle, description, appUrl, shareToPublish);
+            result.success(resultModel.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

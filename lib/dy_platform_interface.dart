@@ -60,7 +60,16 @@ abstract class DyPlatform extends PlatformInterface {
   }
 
   ///分享去编辑页面
-  Future<String?> shareToEditPage(List<String> imgPathList, List<String> videoPathList,bool shareToPublish) {
+  Future<String?> shareToEditPage(
+      List<String> imgPathList,
+      List<String> videoPathList,
+      List<String> mHashTagList,
+      bool shareToPublish,
+      String mState,
+      String appId,
+      String appTitle,
+      String description,
+      String appUrl) {
     throw UnimplementedError('shareToEditPage() has not been implemented.');
   }
 }
