@@ -75,7 +75,7 @@ public class DyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware
             ArrayList<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
             ResultModel resultModel = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList,
                     mHashTagList, mState, appId, appTitle, description, appUrl, shareToPublish);
-            result.success(new Gson().toJson(resultModel));
+            result.success(resultModel.toJson());
         } catch (Exception e) {
             e.printStackTrace();
         }

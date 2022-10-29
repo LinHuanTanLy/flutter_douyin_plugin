@@ -16,12 +16,9 @@ import com.bytedance.sdk.open.aweme.share.Share;
 import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.DouYinOpenConfig;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
-import com.google.gson.Gson;
 import com.ly.dy.model.ResultModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodChannel;
@@ -119,6 +116,8 @@ public class DyUtils {
      */
     public void getSharePageResult(ResultModel result) {
         Map<String, Object> shareResultMap = result.toMap();
+        Log.d("lht", "onResp: " + shareResultMap);
+
         getChanel().invokeMethod("getSharePageResult", shareResultMap, new MethodChannel.Result() {
             @Override
             public void success(@Nullable Object result) {

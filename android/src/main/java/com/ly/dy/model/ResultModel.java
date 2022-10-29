@@ -26,6 +26,13 @@ public class ResultModel {
         return map;
     }
 
+    public  String toJson(){
+        return "{\n" +
+                "   \"code\":\""+code+"\",\n" +
+                "   \""+errorMessage+"\":\"\",\n" +
+                "   \""+result+"\":\"\"\n" +
+                "}";
+    }
     @Override
     public String toString() {
         return "{" +
