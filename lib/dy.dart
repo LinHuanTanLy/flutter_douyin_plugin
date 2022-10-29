@@ -31,7 +31,7 @@ class Dy {
     return DyPlatform.instance.reNewAccessToken(refreshToken);
   }
 
-  Future<String?> shareToEditPage(
+  Future<dynamic> shareToEditPage(
       List<String> imgPathList,
       List<String> videoPathList,
       List<String> mHashTagList,

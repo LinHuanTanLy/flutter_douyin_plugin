@@ -1,3 +1,4 @@
+import 'package:dy/model/result_model.dart';
 import 'package:dy/utils/token/token_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -20,11 +21,25 @@ class MethodChannelDy extends DyPlatform {
       String method = call.method;
       switch (method) {
         case "getAccessToken":
-          String authCode = call.arguments['authCode'];
-          _callBackListener?.call("getAuthCode", authCode);
-          String result = await TokenUtils().getAccessToken(authCode);
-          _callBackListener?.call("getAccessToken", result);
-          return Future.value(result);
+          dynamic arguments = call.arguments;
+          if (arguments != null) {
+            debugPrint("arguments is $arguments");
+            try {
+              debugPrint("arguments is ${arguments["code"] == "200"}");
+              if (arguments["code"] == 200) {
+                debugPrint("arguments is ${arguments["code"] == "200"}");
+
+                _callBackListener?.call("getAuthCode", arguments);
+              }
+            } on Exception catch (e) {
+              debugPrint("error is $e");
+            }
+          }
+          return Future.value(true);
+        case "getSharePageResult":
+          dynamic arguments = call.arguments;
+          _callBackListener?.call("getSharePageResult", arguments);
+          return Future.value(true);
         default:
           return Future.value(true);
       }
@@ -75,7 +90,7 @@ class MethodChannelDy extends DyPlatform {
   }
 
   @override
-  Future<String?> shareToEditPage(
+  Future<dynamic> shareToEditPage(
       List<String> imgPathList,
       List<String> videoPathList,
       List<String> mHashTagList,
@@ -96,6 +111,7 @@ class MethodChannelDy extends DyPlatform {
       "description": description,
       "appUrl": appUrl,
     });
+    debugPrint("shareToEditPage result is $result");
     return result;
   }
 }

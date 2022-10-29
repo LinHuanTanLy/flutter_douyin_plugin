@@ -16,6 +16,7 @@ import com.bytedance.sdk.open.aweme.share.Share;
 import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.DouYinOpenConfig;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
+import com.google.gson.Gson;
 import com.ly.dy.model.ResultModel;
 
 import java.util.ArrayList;
@@ -88,36 +89,37 @@ public class DyUtils {
      * @return
      */
     public void getAccessToken(String authCode) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("authCode", authCode);
-        getChanel().invokeMethod("getAccessToken", map, new MethodChannel.Result() {
-            @Override
-            public void success(@Nullable Object result) {
-                Log.d("lht", "result--" + result);
-            }
+        if (!authCode.isEmpty()) {
+            ResultModel authCodeModel = new ResultModel(200, authCode, "获取AuthCode成功");
+            Map<String, Object> authCodeMap = authCodeModel.toMap();
+            getChanel().invokeMethod("getAccessToken", authCodeMap, new MethodChannel.Result() {
+                @Override
+                public void success(@Nullable Object result) {
+                    Log.d("lht", "result--" + result);
+                }
 
-            @Override
-            public void error(@NonNull String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                @Override
+                public void error(@NonNull String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
 
-            }
+                }
 
-            @Override
-            public void notImplemented() {
+                @Override
+                public void notImplemented() {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     /**
      * 分享编辑页面结果
      *
-     * @param resultMsg
+     * @param result
      * @return
      */
-    public void getSharePageResult(String resultMsg) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("result", resultMsg);
-        getChanel().invokeMethod("getSharePageResult", map, new MethodChannel.Result() {
+    public void getSharePageResult(ResultModel result) {
+        Map<String, Object> shareResultMap = result.toMap();
+        getChanel().invokeMethod("getSharePageResult", shareResultMap, new MethodChannel.Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d("lht", "result--" + result);
@@ -158,7 +160,7 @@ public class DyUtils {
         boolean onlyVideo = false;
         boolean isMix = false;
         if (imgPathList.isEmpty() && videoPathList.isEmpty()) {
-            return new ResultModel(false, "图片和视频不可以同时为空");
+            return new ResultModel(-1, "", "图片和视频不可以同时为空");
         }
         if (!imgPathList.isEmpty() && !videoPathList.isEmpty()) {
             isMix = douYinOpenApi.isAppSupportMixShare();
@@ -171,7 +173,7 @@ public class DyUtils {
         }
         if (shareToPublish && (isMix || onlyVideo)) {
             if (videoPathList.size() > 1) {
-                return new ResultModel(false, "只能分享一个视频");
+                return new ResultModel(-1, "", "只能分享一个视频");
             }
         }
         Share.Request request = new Share.Request();
@@ -214,7 +216,7 @@ public class DyUtils {
             request.mState = mState;
         }
         ///携带的小程序
-        if (!appId.isEmpty() && !appTitle.isEmpty() && !description.isEmpty() && !appUrl.isEmpty()) {
+        if (!appId.isEmpty() && !appTitle.isEmpty() && !appUrl.isEmpty()) {
             MicroAppInfo microAppInfo = new MicroAppInfo();
             microAppInfo.setAppId(appId);
             microAppInfo.setAppTitle(appTitle);
@@ -227,7 +229,12 @@ public class DyUtils {
             request.shareToPublish = true;
         }
         boolean ifShareSuc = douYinOpenApi.share(request);
-        return new ResultModel(ifShareSuc, "调用分享api");
+        if (ifShareSuc) {
+            return new ResultModel(200, "", "调用分享api成功");
+
+        } else {
+            return new ResultModel(-1, "", "调用分享api失败");
+        }
     }
 
 

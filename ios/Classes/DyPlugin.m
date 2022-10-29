@@ -98,7 +98,8 @@ static DyPlugin *instance=nil;
     NSLog(@"tempVideoList is %@",tempVideoList);
     DouyinOpenSDKShareRequest *req = [[DouyinOpenSDKShareRequest alloc] init];
     req.mediaType=DouyinOpenSDKShareMediaTypeImage;
-    req.localIdentifiers=[[NSArray alloc] initWithObjects:tempImgList, nil];;
+    req.localIdentifiers=tempImgList;
+//    req.localIdentifiers=[[NSArray alloc] initWithObjects:tempImgList, nil];;
     req.landedPageType=DouyinOpenSDKLandedPagePublish;
     
    [req sendShareRequestWithCompleteBlock:^(DouyinOpenSDKShareResponse * _Nonnull response) {

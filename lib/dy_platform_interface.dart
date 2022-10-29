@@ -60,7 +60,7 @@ abstract class DyPlatform extends PlatformInterface {
   }
 
   ///分享去编辑页面
-  Future<String?> shareToEditPage(
+  Future<dynamic> shareToEditPage(
       List<String> imgPathList,
       List<String> videoPathList,
       List<String> mHashTagList,

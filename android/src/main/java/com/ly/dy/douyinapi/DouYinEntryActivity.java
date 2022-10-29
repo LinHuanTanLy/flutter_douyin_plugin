@@ -16,6 +16,7 @@ import com.bytedance.sdk.open.aweme.common.model.BaseResp;
 import com.bytedance.sdk.open.aweme.share.Share;
 import com.bytedance.sdk.open.douyin.DouYinOpenApiFactory;
 import com.bytedance.sdk.open.douyin.api.DouYinOpenApi;
+import com.ly.dy.model.ResultModel;
 import com.ly.dy.utils.DyUtils;
 
 public class DouYinEntryActivity extends Activity implements IApiEventHandler {
@@ -51,16 +52,17 @@ public class DouYinEntryActivity extends Activity implements IApiEventHandler {
         } else if (resp.getType() == CommonConstants.ModeType.SHARE_CONTENT_TO_TT_RESP) {
             //发布回调
             Share.Response response = (Share.Response) resp;
-            String shareResult = "";
+            ResultModel shareResult = new ResultModel();
             if (response.isSuccess()) {
-                shareResult = "分享成功";
+                shareResult.setCode(200);
+                shareResult.setErrorMessage("分享成功");
             } else {
-                shareResult = response.errorMsg;
-                Toast.makeText(this, response.errorCode + response.subErrorCode + response.errorMsg,
-                        Toast.LENGTH_LONG).show();
+                shareResult.setCode(-1);
+                shareResult.setErrorMessage(response.errorMsg);
             }
-            DyUtils.getInstance().getSharePageResult(shareResult);
+            Log.d("lht", "onResp: " + shareResult.toString());
 
+            DyUtils.getInstance().getSharePageResult(shareResult);
         }
         this.finish();
     }

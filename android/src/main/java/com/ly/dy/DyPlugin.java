@@ -1,15 +1,16 @@
 package com.ly.dy;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.ly.dy.model.ResultModel;
 import com.ly.dy.utils.DyUtils;
 import com.ly.dy.utils.FileUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -74,7 +75,7 @@ public class DyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware
             ArrayList<String> videoPathList = new ArrayList<>(FileUtils.getInstance().convert2FileProvider(activity, tempVideoPathList));
             ResultModel resultModel = DyUtils.getInstance().shareToEditPage(imgPathList, videoPathList,
                     mHashTagList, mState, appId, appTitle, description, appUrl, shareToPublish);
-            result.success(resultModel.toString());
+            result.success(new Gson().toJson(resultModel));
         } catch (Exception e) {
             e.printStackTrace();
         }
