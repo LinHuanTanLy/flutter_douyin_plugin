@@ -29,7 +29,7 @@ abstract class DyPlatform extends PlatformInterface {
   }
 
   ///登录
-  Future<String?> loginInWithDouyin() {
+  Future<String?> loginInWithDouyin(String scope) {
     throw UnimplementedError('loginInWithDouyin() has not been implemented.');
   }
 

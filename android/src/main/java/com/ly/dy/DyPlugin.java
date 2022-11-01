@@ -46,7 +46,8 @@ public class DyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware
                 result.success("" + initResult);
                 break;
             case "loginInWithDouyin":
-                boolean loginResult = DyUtils.getInstance().loginWithSdk(activity);
+                String scope=call.argument("scope");
+                boolean loginResult = DyUtils.getInstance().loginWithSdk(activity,scope);
                 result.success("" + loginResult);
                 break;
             case "shareToEditPage":

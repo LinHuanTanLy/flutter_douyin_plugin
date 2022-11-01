@@ -59,9 +59,11 @@ class MethodChannelDy extends DyPlatform {
   }
 
   @override
-  Future<String?> loginInWithDouyin() async {
+  Future<String?> loginInWithDouyin(String scope) async {
     final result =
-        await methodChannel.invokeMethod<String>('loginInWithDouyin');
+        await methodChannel.invokeMethod<String>('loginInWithDouyin',{
+          "scope":scope
+        });
     return result;
   }
 

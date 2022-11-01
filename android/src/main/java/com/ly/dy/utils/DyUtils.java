@@ -68,11 +68,12 @@ public class DyUtils {
      * 登录
      *
      * @param activity 对应ac
+     * @param scope scope
      * @return 是否调用成功
      */
-    public boolean loginWithSdk(Activity activity) {
+    public boolean loginWithSdk(Activity activity,String scope) {
         Authorization.Request request = new Authorization.Request();
-        request.scope = "user_info";
+        request.scope = scope;
         request.state = "ww";
         request.callerLocalEntry = "com.ly.dy.douyinapi.DouYinEntryActivity";
         return getDouYinOpenApi(activity).authorize(request);

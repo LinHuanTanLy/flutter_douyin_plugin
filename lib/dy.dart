@@ -11,8 +11,8 @@ class Dy {
     return DyPlatform.instance.getPlatformVersion();
   }
 
-  Future<String?> loginInWithDouyin() {
-    return DyPlatform.instance.loginInWithDouyin();
+  Future<String?> loginInWithDouyin(String scope) {
+    return DyPlatform.instance.loginInWithDouyin(scope);
   }
 
   Future<String?> reNewRefreshToken(String refreshToken) {
