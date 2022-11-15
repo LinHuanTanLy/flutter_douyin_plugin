@@ -2,7 +2,7 @@
 #import <DouyinOpenSDK/DouyinOpenSDKApplicationDelegate.h>
 #import <DouyinOpenSDK/DouyinOpenSDKAuth.h>
 #import <DouyinOpenSDK/DouyinOpenSDKShare.h>
-
+#import <Photos/Photos.h>
 @implementation DyPlugin
 
 
@@ -94,31 +94,25 @@ static DyPlugin *instance=nil;
 - (void) shareToEditPage:(NSDictionary *) options{
     NSArray *tempImgList=options[@"imgPathList"];
     NSArray *tempVideoList=options[@"videoPathList"];
+    
     NSLog(@"tempImgList is %@",tempImgList);
     NSLog(@"tempVideoList is %@",tempVideoList);
+    
+
+    
     DouyinOpenSDKShareRequest *req = [[DouyinOpenSDKShareRequest alloc] init];
     req.mediaType=DouyinOpenSDKShareMediaTypeImage;
     req.localIdentifiers=tempImgList;
-//    req.localIdentifiers=[[NSArray alloc] initWithObjects:tempImgList, nil];;
-    req.landedPageType=DouyinOpenSDKLandedPagePublish;
-    
-   [req sendShareRequestWithCompleteBlock:^(DouyinOpenSDKShareResponse * _Nonnull response) {
-       NSLog(@"进到分享的回调里面了");
-       NSString *result=nil;
-        result=response.description;
-        if(response.isSucceed){
-            
-        }else{
-            
-        }
-        NSLog(@"result is %@",result);
-    }];
-
-    NSLog(@"方法结束了");
+    [req sendShareRequestWithCompleteBlock:^(DouyinOpenSDKShareResponse * _Nonnull Response) {
+           NSString *alertString = nil;
+           if (Response.errCode == 0) {
+               alertString = [NSString stringWithFormat:@"Share succeed"];
+           } else{
+               alertString = [NSString stringWithFormat:@"Share failed error code : %@ , error msg : %@", @(Response.errCode), Response.errString];
+           }
+        NSLog(@"进到分享的回调里面了%@",alertString);
+       }];
 }
-
-
-
 
 @end
 

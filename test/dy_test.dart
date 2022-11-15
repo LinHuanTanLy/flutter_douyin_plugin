@@ -10,11 +10,6 @@ class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
   Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
-  Future<String?> loginInWithDouyin() {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<String?> initKey(String clientKey, String clientSecret) {
     throw UnimplementedError();
   }
@@ -39,7 +34,22 @@ class MockDyPlatform with MockPlatformInterfaceMixin implements DyPlatform {
   }
 
   @override
-  Future<String?> shareToEditPage(List<String> imgPathList, List<String> videoPathList, bool shareToPublish) {
+  Future<String?> loginInWithDouyin(String scope) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future shareToEditPage(
+      List<String> imgPathList,
+      List<String> videoPathList,
+      List<String> mHashTagList,
+      bool shareToPublish,
+      String mState,
+      String appId,
+      String appTitle,
+      String description,
+      String appUrl) {
+    // TODO: implement shareToEditPage
     throw UnimplementedError();
   }
 }
