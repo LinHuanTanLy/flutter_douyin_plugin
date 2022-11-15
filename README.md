@@ -1,15 +1,5 @@
 # dy
 
-A new Flutter project.
+封装了部分抖音sdk功能的sdk，主要包含**抖音授权**以及**抖音发布**两个模块的功能
 
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+## 具体API
