@@ -1,7 +1,8 @@
 name: dy
-description: A new Flutter project.
+description: a plugin with DouYin SDK
 version: 0.0.1
-homepage:
+authorization: 
+repository: https://github.com/LinHuanTanLy/flutter_douyin_plugin.git
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
