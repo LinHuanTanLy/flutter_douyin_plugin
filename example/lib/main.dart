@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
                     loginInResult = "initKey first";
                   });
                 }
-                loginInResult = await _dyPlugin.loginInWithDouyin();
+                loginInResult = await _dyPlugin.loginInWithDouyin("");
               }, '$loginInResult'),
               _buildItemWidget("addDyCallbackListener", () async {
                 _dyPlugin.addDyCallbackListener((eventName, eventParams) {});

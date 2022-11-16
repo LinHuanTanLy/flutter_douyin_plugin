@@ -1,0 +1,29 @@
+PODS:
+  - DouyinOpenSDK (4.0.2)
+  - dy (0.0.1):
+    - DouyinOpenSDK
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - dy (from `.symlinks/plugins/dy/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - DouyinOpenSDK
+
+EXTERNAL SOURCES:
+  dy:
+    :path: ".symlinks/plugins/dy/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  DouyinOpenSDK: 811171d4d3ebf82ef4faa6023a79b9c77c5d2611
+  dy: 7262dd717b88f5d755a5fd00f15ea89c32a9cf64
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+
+PODFILE CHECKSUM: 1450cf14e86037f10152497619fa7aebf83d40a1
+
+COCOAPODS: 1.11.3
